@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { Auth } from '../auth.ts'
+import { auth } from '../auth'
 
 const router = useRouter()
 const awaiting = ref(false)
-const email = defineModel<string>('email')
-const password = defineModel<string>('password')
-const remember = defineModel<boolean>('remember', { default: true })
+const email = ref<string>('')
+const password = ref<string>('')
+const remember = ref<boolean>(true)
 
-function onSubmit(form: Event) {
-  let auth = new Auth(remember.value)
-
+function onSubmit() {
   awaiting.value = true
   auth.signIn(
     email.value || '',

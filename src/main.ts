@@ -2,7 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App_Comsumy.vue'
-import router from './router/index_Consumy'
+import router from './router/index'
 
 const app = createApp(App)
 

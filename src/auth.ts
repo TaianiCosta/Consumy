@@ -7,10 +7,10 @@ class Auth {
     this.storage = createStorage(persistent)
   }
 
-  private getFallback(key: string) : string | null {
-    let transient = createStorage(false)
-    let persistent = createStorage(true)
-    
+  private getFallback(key: string): string | null {
+    const transient = createStorage(false)
+    const persistent = createStorage(true)
+
     return transient.get(key) || persistent.get(key)
   }
 
@@ -22,12 +22,12 @@ class Auth {
     })
   }
 
-  function failure(response: Response, onFailure: () => void) {
-      onFailure()
-    }
+  failure(response: Response, onFailure: () => void) {
+    onFailure()
+  }
 
   currentUser() {
-    if(!this.isLoggedIn()) {
+    if (!this.isLoggedIn()) {
       return null
     }
 
@@ -35,23 +35,22 @@ class Auth {
       email: this.getFallback('email')
     }
   }
-}
 
-isLoggedIn() {
+  isLoggedIn() {
     return Boolean(this.getFallback('token'))
-}
+  }
 
-function signOut(andThen = () => {}) {
-  let transient = createStorage(false)
-  let persistent = createStorage(true)
+  signOut(andThen = () => {}) {
+    const transient = createStorage(false)
+    const persistent = createStorage(true)
 
-  transient.remove('token')
-  transient.remove('email')
-  persistent.remove('token')
-  persistent.remove('email')
+    transient.remove('token')
+    transient.remove('email')
+    persistent.remove('token')
+    persistent.remove('email')
 
-  andThen()
-}
+    andThen()
+  }
 
   async signIn(email: string, password: string, onSuccess: () => void, onFailure: () => void) {
     const body = {
@@ -60,26 +59,29 @@ function signOut(andThen = () => {}) {
         password: password
       }
     }
-    
-    fetch("http://localhost:3000/sign_in", {
-      method: "POST",
+
+    fetch('http://localhost:3000/sign_in', {
+      method: 'POST',
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    },
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(body)
     }).then((response) => {
-      if(response.ok) {
+      if (response.ok) {
         this.success(response, onSuccess)
       } else {
         this.failure(response, onFailure)
       }
     })
   }
-  
-export const auth = {
-  signIn,
-  loggedIn,
-  currentUser,
-  signOut
 }
+
+const authInstance = new Auth()
+
+export const signIn = authInstance.signIn.bind(authInstance)
+export const loggedIn = authInstance.isLoggedIn.bind(authInstance)
+export const currentUser = authInstance.currentUser.bind(authInstance)
+export const signOut = authInstance.signOut.bind(authInstance)
+
+export const auth = authInstance
