@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { auth } from '../auth.ts'
+import { Auth } from '../auth.ts'
 
 const router = useRouter()
 const awaiting = ref(false)

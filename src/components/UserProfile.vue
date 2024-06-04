@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { auth } from '../auth'
+import { Auth } from '../auth'
 import { ref } from 'vue'
 
 const auth = new Auth()
