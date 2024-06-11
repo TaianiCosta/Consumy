@@ -1,6 +1,6 @@
 import { createStorage, type SimpleStorage } from './storage'
 
-class Auth {
+export class Auth {
   private storage: SimpleStorage
 
   constructor(persistent = false) {
@@ -76,12 +76,3 @@ class Auth {
     })
   }
 }
-
-const authInstance = new Auth()
-
-export const signIn = authInstance.signIn.bind(authInstance)
-export const loggedIn = authInstance.isLoggedIn.bind(authInstance)
-export const currentUser = authInstance.currentUser.bind(authInstance)
-export const signOut = authInstance.signOut.bind(authInstance)
-
-export const auth = authInstance

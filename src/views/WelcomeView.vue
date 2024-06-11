@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { auth } from '../auth.ts'
+import { Auth } from '../auth'
 import { ref } from 'vue'
 import UserProfile from '../components/UserProfile.vue'
+
+const auth = new Auth()
 
 const currentUser = ref(auth.currentUser())
 
 const signOut = function () {
   auth.signOut(() => {
-    currentUser.value.valeu = auth.currentUser()
+    currentUser.value = auth.currentUser()
   })
 }
 </script>
